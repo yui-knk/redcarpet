@@ -177,6 +177,63 @@ HTML
     assert_equal html, output
   end
 
+  def test_that_footnotes_work2
+    markdown = <<-MD
+Active Supportにデフォルトで装備されている「シンプルな」バックエンドを使用している場合、純粋なRubyファイル形式およびYAMLフォーマット[^2]が使用できます。
+
+[^2]: この他のバックエンドでは、異なるフォーマットが利用できたり、必須とされる可能性があります。たとえば、GetTextバックエンドはGetTextファイルを読み込めるでしょう。
+MD
+
+    html = <<HTML
+<p>This is a footnote.[^1]</p>
+
+<p>[^1]: It provides additional information.</p>
+
+HTML
+
+    renderer = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+      no_intra_emphasis: true,
+      fenced_code_blocks: true,
+      autolink: true,
+      strikethrough: true,
+      superscript: true,
+      tables: true,
+      # footnotes: true
+    )
+    output = renderer.render(markdown)
+    assert_equal html, output
+  end
+
+  def test_that_footnotes_work3
+    markdown = <<-MD
+How to Store your Custom Translations
+-------------------------------------
+
+The Simple backend shipped with Active Support allows you to store translations in both plain Ruby and YAML format.[^2]
+
+[^2]: Other backends might allow or require to use other formats, e.g. a GetText backend might allow to read GetText files.
+MD
+
+    html = <<HTML
+<p>This is a footnote.[^1]</p>
+
+<p>[^1]: It provides additional information.</p>
+
+HTML
+
+    renderer = Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+      no_intra_emphasis: true,
+      fenced_code_blocks: true,
+      autolink: true,
+      strikethrough: true,
+      superscript: true,
+      tables: true,
+      # footnotes: true
+    )
+    output = renderer.render(markdown)
+    assert_equal html, output
+  end
+
   def test_footnotes_enabled_but_missing_definition
     markdown = "Some text with a marker[^1] but no definition."
     html = "<p>Some text with a marker[^1] but no definition.</p>\n"
